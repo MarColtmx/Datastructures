@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Venta de Productos</title>
+</head>
+<body>
+    <nav>
+        <a href="/">Venta de Productos</a> |
+        <a href="/admin">Administrar Inventario</a>
+    </nav>
+
+    <h1>Venta de Productos</h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul style="color: green;">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <label>Buscar producto (ID o nombre):</label>
+        <input type="text" name="codigo_producto" required>
+        <button type="submit">Buscar Producto</button>
+    </form>
+
+    {% if productos_vendidos %}
+        <h2>Productos seleccionados:</h2>
+        <table border="1">
+            <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+            </tr>
+            {% for p in productos_vendidos %}
+            <tr>
+                <td>{{ p['nombre'] }}</td>
+                <td>${{ p['precio'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <p><strong>Total:</strong> ${{ total_venta }}</p>
+
+        <form method="POST" action="/finalizar_venta">
+            <button type="submit">Finalizar Venta</button>
+        </form>
+    {% endif %}
+</body>
+</html>
